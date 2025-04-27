@@ -11,7 +11,7 @@ import SwiftUI
 struct To_Do_List_AppApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WelcomeScreenView(coordinates: ImportanceCirclesCoordinates(), viewModel: TaskViewModel())
         }
     }
 }
