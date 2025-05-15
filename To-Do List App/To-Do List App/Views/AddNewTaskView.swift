@@ -138,6 +138,11 @@ struct AddNewTaskView: View {
                             importance: importanceLevel
                         )
                         
+                        taskCharacteristics.taskName = ""
+                        taskCharacteristics.taskDescription = ""
+                        taskCharacteristics.selectedDate = Date()
+                        
+                        
                         withAnimation(.easeInOut(duration: 0.5)) {
                             showAddScreen = false
                         }

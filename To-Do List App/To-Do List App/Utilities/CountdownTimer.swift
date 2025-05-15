@@ -10,8 +10,8 @@ import SwiftUI
 class CountdownTimer: ObservableObject {
     @Published var timeRemaining: String = ""
     @Published var timeIsUp: Int = -1
+    
     var targetDate: Date
-
     private var timer: Timer?
 
     init(targetDate: Date) {
@@ -28,7 +28,17 @@ class CountdownTimer: ObservableObject {
 
     private func updateRemainingTime() {
         let now = Date()
-        let remaining = max(0, targetDate.timeIntervalSince(now))
+        let interval = targetDate.timeIntervalSince(now)
+        let remaining: TimeInterval
+        
+        let redLimit = (UserDefaults.standard.double(forKey: "redHours")) * 3600
+        let yellowLimit = (UserDefaults.standard.double(forKey: "yellowDays")) * 86400
+
+        if interval < 0 {
+            remaining = 0
+        } else {
+            remaining = interval
+        }
         
         if remaining <= 0 {
             self.timeRemaining = "Time is up!"
@@ -42,9 +52,9 @@ class CountdownTimer: ObservableObject {
             
             if remaining <= 0 {
                 timeIsUp = 0
-            } else if remaining <= 86400 {
-                timeIsUp = 3 
-            } else if remaining <= 259200 {
+            } else if remaining <= redLimit {
+                timeIsUp = 3
+            } else if remaining <= yellowLimit {
                 timeIsUp = 2
             } else {
                 timeIsUp = 1

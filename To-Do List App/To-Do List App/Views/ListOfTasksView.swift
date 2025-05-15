@@ -10,7 +10,6 @@ import SwiftUI
 
 struct ListOfTasksView: View {
     @Binding var showAddScreen: Bool
-//    @Binding var showSideMenu: Int
     @ObservedObject var coordinates: ImportanceCirclesCoordinates
     @ObservedObject var taskCharacteristics: TaskCharacteristics
     @ObservedObject var viewModel: TaskViewModel
@@ -39,7 +38,9 @@ struct ListOfTasksView: View {
                                     }
                                     .tint(.importanceRed)
                                     Button {
-                                        print("done")
+                                        withAnimation {
+                                            viewModel.makeCompleted(task: note)
+                                        }
                                     } label: {
                                         Label("Done", systemImage: "checkmark")
                                     }

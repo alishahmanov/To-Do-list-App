@@ -20,11 +20,18 @@ struct TaskCardView: View {
     }
 
     var baseColor: Color {
-        switch timer.timeIsUp {
-        case 1 : return .importanceGreen
-        case 2 : return .importanceYellow
-        case 3 : return .importanceRed
-        default: return .gray
+        if task.isCompleted {
+            return .buttonColor
+        } else {
+            if timer.timeIsUp == 1 {
+                return .importanceGreen
+            } else if timer.timeIsUp == 2 {
+                return .importanceYellow
+            } else if timer.timeIsUp == 3 {
+                return .importanceRed
+            } else {
+                return .gray
+            }
         }
     }
     var starsImportance: Int {
@@ -80,10 +87,17 @@ struct TaskCardView: View {
                     }
                     .padding(.top, 5)
                 }
-                Text("\(timer.timeRemaining)")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(timer.timeIsUp == 3 ? .importanceRed : .white)
-                    .padding(.top, 10)
+                if task.isCompleted, let timeDone = task.timeCompleted {
+                    Text("Task was done \(timeDone) early")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.top, 10)
+                } else {
+                    Text("\(timer.timeRemaining)")
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(timer.timeIsUp == 3 ? .importanceRed : .white)
+                        .padding(.top, 10)
+                }
                 Text("Deadline: \(task.deadline.formatted(date: .abbreviated, time: .omitted))")
                     .font(.caption)
                     .foregroundColor(.deadlineTextColor)
@@ -92,19 +106,26 @@ struct TaskCardView: View {
             Spacer()
             
             ZStack {
-                Circle()
-                    .fill(animatedColor)
-                    .frame(width: 35, height: 35)
-                    .scaleEffect(scale)
-                    .padding(.trailing)
-                    .onAppear {
-                        withAnimation(.easeInOut(duration: 1.0)
-                            .repeatForever(autoreverses: true)
-                        ) {
-                            scale = 1.3
-                            isExpanded.toggle()
+                if task.isCompleted {
+                    Image(systemName: "star.fill")
+                        .resizable()
+                        .foregroundColor(.buttonColor)
+                        .frame(width: 35, height: 35)
+                } else {
+                    Circle()
+                        .fill(animatedColor)
+                        .frame(width: 35, height: 35)
+                        .scaleEffect(scale)
+                        .padding(.trailing)
+                        .onAppear {
+                            withAnimation(.easeInOut(duration: 1.0)
+                                .repeatForever(autoreverses: true)
+                            ) {
+                                scale = 1.3
+                                isExpanded.toggle()
+                            }
                         }
-                    }
+                }
             }
         }
         .padding()

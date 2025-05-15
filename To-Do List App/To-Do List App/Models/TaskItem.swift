@@ -13,4 +13,6 @@ struct TaskItem: Identifiable, Codable, Equatable {
     var description: String
     var deadline: Date
     var importance: String
+    var isCompleted: Bool
+    var timeCompleted: String?
 }

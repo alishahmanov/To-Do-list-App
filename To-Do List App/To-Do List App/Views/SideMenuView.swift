@@ -7,13 +7,19 @@
 import SwiftUI
 
 struct SideMenuView: View {
+    @Binding var showSettingsScreen: Bool
+    @Binding var showDoneTask: Bool
+
     var body: some View {
         ZStack {
             Color.circleCardBackground.edgesIgnoringSafeArea(.all)
             
             VStack(alignment: .leading, spacing: 0) {
                 Button {
-                    print("Show")
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        showSettingsScreen = false
+                        showDoneTask = false
+                    }
                 } label: {
                     Text("Main")
                         .foregroundColor(.buttonColor)
@@ -23,7 +29,10 @@ struct SideMenuView: View {
                 Divider()
                     .background(Color.dividerColor)
                 Button {
-                    print("Show")
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        showSettingsScreen = true
+                        showDoneTask = false
+                    }
                 } label: {
                     Text("Settings")
                         .foregroundColor(.buttonColor)
@@ -32,7 +41,10 @@ struct SideMenuView: View {
                 Divider()
                     .background(Color.dividerColor)
                 Button {
-                    print("Show")
+                    withAnimation(.easeInOut(duration: 0.5)) {
+                        showDoneTask = true
+                        showSettingsScreen = false
+                    }
                 } label: {
                     Text("Completed Tasks")
                         .foregroundColor(.buttonColor)
@@ -45,6 +57,3 @@ struct SideMenuView: View {
     }
 }
 
-#Preview {
-    SideMenuView()
-}
